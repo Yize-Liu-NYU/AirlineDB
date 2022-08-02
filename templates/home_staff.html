@@ -1,0 +1,325 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <link rel="stylesheet" href="../css/home_staff.css">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  </head>
+  <body>
+    <h1>Welcome {{name}} at {{airline_name}}</h1>
+
+    <div id="wrapper">
+
+
+      <div id="sidebar-wrapper">
+        <ul class="sidebar-nav">
+          <li id="li-1"><a href="#">View flights in next 30 days</a> </li>
+          <li id="li-2"><a href="#">Search all flights</a> </li>
+          <li id="li-3"><a href="#">Create new flights</a> </li>
+          <li id="li-4"><a href="#">Change Status of flights</a> </li>
+          <li id="li-5"><a href="#">Add airplane in the system</a> </li>
+          <li id="li-6"><a href="#">Add new airport in the system</a> </li>
+          <li id="li-7"><a href="#">View flight ratings</a> </li>
+          <li id="li-8"><a href="#">View frequent customers</a> </li>
+          <li id="li-9"><a href="#">View reports</a> </li>
+          <li id="li-10"><a href="#">View Earned Revenue</a> </li>
+          <li id="li-11"><a href="#">View Earned Revenue by travel class</a> </li>
+          <li id="li-12"><a href="#">View Top destinations</a> </li>
+          <li id="li-13"><a href="#">All customer on certain flight</a> </li>
+          <li id="li-14"><a href="/logout_staff">Logout</a> </li>
+        </ul>
+      </div>
+
+      <div id="content">
+        <div class="container-fluid">
+          <div class="rows">
+            <div class="col-lg-12">
+              <a href="#" class="btn btn-success" id="menu-toggle">show menu</a>
+              <br>
+              <div id="content-1">
+                
+                <table>
+                  <th>Time</th>
+                  <th>Flight</th>
+                  <th>Departure time</th>
+                  <th>Departure Airport</th>
+                  <th>Arrival Airport</th>
+                  <th>Status</th>
+
+                  {% for line in s1default %}
+                  <tr>
+                    <td>{{line['airline_name']}}</td>
+                    <td>{{line['flight_number']}}</td>
+                    <td>{{line['dep_date_time']}}</td>  
+                    <td>{{line['dept_airport']}}</td>
+                    <td>{{line['arr_airport']}}</td>
+                    <td>{{line['status']}}</td>
+                  </tr>
+                  {% endfor %}
+                </table>
+
+              </div>
+
+              <div id="content-2">
+                <form action="/staff_result" method="POST">
+                  <input type="text" name="dep" placeholder= "Departure Airport or City" required/> </br>
+                  <input type="text" name = "arr" placeholder="Arrival Airport or City" required/></br>
+                  Beginning of date range: <input type="date" name = "sdate" required/></br>
+                  End of date range: <input type="date" name = "edate" required/></br>
+                  <button class="button">Search</button>
+                  {% if error %}
+                    <p class="error"><strong>Error:</strong> {{error}}</p>
+                  {% endif %}
+                </form>
+              </div>
+              <div id="content-3">
+                <form action = "/new_flight" method = "POST">
+                  <input type="text" name="flight_number" placeholder= "Flight Number" required/></br>
+                  <input type="number" name="dep_datetime" placeholder= "Departure Date Time" required/>Please use YYYYMMDDHHMMSS format</br>
+                  <input type="text" name="dep_airport" placeholder= "Departure Airport" required/></br>
+                  <input type="text" name="arr_airport" placeholder= "Arrival Airport" required/></br>
+                  <input type="number" name="arr_datetime" placeholder= "Arrival Date Time" required/>Please use YYYYMMDDHHMMSS format</br>
+                  <input type="text" name="base_price" placeholder= "Base Price" required/></br>
+                  <input type="text" name="plane_id" placeholder= "Plane ID" required/></br>
+                  <select name="status">
+                    <option value = "on-time">on-time</option>
+                    <option value = "delayed">delayed</option>
+                    <option value = "canceled">canceled</option>
+                  </select>
+                  <input type="submit" value="Create">
+                  {% if error %}
+                    <p class="error"><strong>Error:</strong> {{error}}</p>
+                  {% endif %}
+                </form>
+
+              </div>
+              <div id="content-4">
+                <form action = "/update_flight" method = "POST">
+                  <input type="text" name="flight_number" placeholder= "Flight Number" required/>
+                  <input type="number" name="dept_date" placeholder= "Departure Date and Time" required/>Please use YYYYMMDDHHMMSS format</br>
+                  <select name="status">
+                    <option value = "on-time">on-time</option>
+                    <option value = "delayed">delayed</option>
+                    <option value = "canceled">canceled</option>
+                  </select>
+                  <input type="submit" value="Update">
+                  {% if error %}
+                    <p class="error"><strong>Error:</strong> {{error}}</p>
+                  {% endif %}
+                </form>
+
+              </div>
+              <div id="content-5">
+                <form action = "/new_plane" method = "POST">
+                  <input type="text" name="airplane_id" placeholder= "Airplane ID" required/></br>
+                  <input type="number" name="seat" placeholder= "Seat Count" required/></br>
+                  <input type="text" name="Manufacturer" placeholder= "Manufacturer" required/></br>
+                  <input type="number" name="age" placeholder= "Age" required/></br>
+                  <input type="submit" value="Create">
+                  {% if error %}
+                    <p class="error"><strong>Error:</strong> {{error}}</p>
+                  {% endif %}
+                </form>
+
+              </div>
+              <div id="content-6">
+                <form action = "/new_port" method = "POST">
+                  <input type="text" name="code" placeholder= "Airport Code" required/></br>
+                  <input type="text" name="name" placeholder= "Airport Name" required/></br>
+                  <input type="text" name="city" placeholder= "City Name" required/></br>
+                  <input type="text" name="country" placeholder= "country" required/></br>
+                  <select name="type">
+                    <option value = "domestic">domestic</option>
+                    <option value = "international">international</option>
+                    <option value = "both">both</option>
+                  </select>
+                  <input type="submit" value="Create">
+                  {% if error %}
+                    <p class="error"><strong>Error:</strong> {{error}}</p>
+                  {% endif %}
+                </form>
+
+              </div>
+              <div id="content-7">
+                <form action="/rate_result" method="POST">
+                  <input type="text" name="flight_number" placeholder= "Flight Number" required/> </br>
+                  <input type="number" name = "dep_datetime" placeholder="Departure Date Time" required/>Please use YYYYMMDDHHMMSS format</br>
+                  <button class="button">Check</button>
+                  {% if error %}
+                    <p class="error"><strong>Error:</strong> {{error}}</p>
+                  {% endif %}
+                </form>
+
+              </div>
+              <div id="content-8">
+                Most Frequent Custoemr E-Mail: 
+                {% for line in freq %}
+                  <tr>
+                    <td>{{line['email']}}</td>
+                  </tr>
+                {% endfor %}
+                
+                <table>
+                  <th>Flight Number</th>
+                  <th>Departure time</th>
+
+                  {% for line in freq_trips %}
+                  <tr>
+                    <td>{{line['flight_number']}}</td>
+                    <td>{{line['dep_date_time']}}</td>  
+                  </tr>
+                  {% endfor %}
+                </table>
+
+              </div>
+
+              <div id="content-9">
+                <form action="/reports" method="POST">
+                Beginning of date range: <input type="date" name = "sdate" required/></br>
+                End of date range: <input type="date" name = "edate" required/></br>
+                <input type="submit" value="Search">
+                {% if error %}
+                  <p class="error"><strong>Error:</strong> {{error}}</p>
+                {% endif %}
+                </form>
+
+              </div>
+              <div id="content-10">
+                Revenue Last Month: 
+                {% for line in lastmonth %}
+                <tr>
+                  <td>{{line['lastmonth']}}</td>
+                </tr>
+                {% endfor %}
+                Revenue Last Year: 
+                {% for line in lastyear %}
+                <tr>
+                  <td>{{line['lastyear']}}</td>
+                </tr>
+                {% endfor %}
+
+              </div>
+              <div id="content-11">
+                <form action = "/revenue_class" method = "POST">
+                  <select name="class">
+                    <option value = "first class">first class</option>
+                    <option value = "business class">business class</option>
+                    <option value = "economy class">economy class</option>
+                  </select>
+                  <input type="submit" value="Check">
+                  {% if error %}
+                    <p class="error"><strong>Error:</strong> {{error}}</p>
+                  {% endif %}
+                </form>
+
+              </div>
+              <div id="content-12">
+                Top 3 Destinations in the last 3 month: <br>
+                {% for line in top3month %}
+                <tr>
+                  <td>{{line['arr_airport']}}</td><br>
+                </tr>
+                {% endfor %}
+                <br>
+                Top 3 Destinations in the year: <br>
+                {% for line in top3year %}
+                <tr>
+                  <td>{{line['arr_airport']}}</td><br>
+                </tr>
+                {% endfor %}
+
+              </div>
+              <div id="content-13">
+                <form action="/everyone" method="POST">
+                  <input type="text" name = "flight" placeholder="Flight Number" required/></br>
+                  <input type="number" name = "date" placeholder="YYYYMMDDHHMMSS Departure Date and Time" required/></br>
+                  <button class="button">Search</button>
+                  {% if error %}
+                    <p class="error"><strong>Error:</strong> {{error}}</p>
+                  {% endif %}
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      $(document).ready(function() {
+        open(1)
+        var temp = "none";
+        $("#li-1").click(function () {
+          open(1);
+        });
+        $("#li-2").click(function () {
+          open(2);
+        });
+        $("#li-3").click(function () {
+          open(3);
+        });
+        $("#li-4").click(function () {
+          open(4);
+        });
+        $("#li-5").click(function () {
+          open(5);
+        });
+        $("#li-6").click(function () {
+          open(6);
+        });
+        $("#li-7").click(function () {
+          open(7);
+        });
+        $("#li-8").click(function () {
+          open(8);
+        });
+        $("#li-9").click(function () {
+          open(9);
+        });
+        $("#li-10").click(function () {
+          open(10);
+        });
+        $("#li-11").click(function () {
+          open(11);
+        });
+        $("#li-12").click(function () {
+          open(12);
+        });
+        $("#li-13").click(function () {
+          open(13);
+        });
+        $("#li-14").click(function () {
+          open(14);
+        });
+
+        function open(obj) {
+          for (var i = 1; i < 14; i++) {
+            if (i == obj) {
+              temp = "block";
+            } else {
+              temp = "none";
+            }
+            document.getElementById("content-" + i).style.display = temp;
+
+          }
+        }
+      })
+      $("#menu-toggle").click(function(e){
+        e.preventDefault();
+        $("#wrapper").toggleClass("menuDisplayed");
+      });
+    </script>
+
+
+
+
+
+
+  </body>
+</html>

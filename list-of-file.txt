@@ -1,0 +1,21 @@
+project.py - Main project file, execute this. It contains Flask program. 
+
+Templates folder: 
+byclass.html - revenue by class result
+cust_result - result from customer search
+customer_search - allow customer to search their flights
+everyone - everyone on a flight
+home_customer - customer home page
+home_staff - staff home page
+index - main page
+login - login page
+pub_result - result for public flight search
+rate_result - show result of rating
+register - register for customer
+register_staff - register for staff
+report - revenue report
+spent - money spent for customer
+staff_result - staff flight search result
+
+CSS: 
+style files, not that important. 
